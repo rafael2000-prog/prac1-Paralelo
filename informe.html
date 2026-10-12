@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Informe: procesamiento secuencial y paralelo</title>
+  <style>
+    body { max-width: 960px; margin: 2.5rem auto; padding: 0 1.2rem; font: 16px/1.55 system-ui, sans-serif; color: #17212b; }
+    h1, h2 { line-height: 1.2; }
+    table { border-collapse: collapse; width: 100%; margin: 1rem 0 1.6rem; }
+    th, td { border: 1px solid #cbd5df; padding: .55rem .7rem; text-align: left; }
+    th { background: #edf3f8; }
+    code { background: #f1f3f5; padding: .1rem .3rem; }
+    .note { color: #435466; }
+  </style>
+</head>
+<body>
+  <h1>Procesamiento secuencial y paralelo de texto</h1>
+  <p><strong>Fecha de ejecución:</strong> 8 de octubre de 2026<br>
+     <strong>Archivo:</strong> DonQuijote.txt (2.168.114 caracteres)<br>
+     <strong>Entorno:</strong> Java 21 (Eclipse Adoptium), Windows, 12 procesadores lógicos detectados, procesador de 6 núcleos y 8 GB de memoria RAM.</p>
+
+  <h2>Solución</h2>
+  <p>El programa cuenta palabras formadas por letras Unicode y marcas diacríticas, apariciones exactas de «Quijote» y palabras que contienen «ción», ignorando mayúsculas y minúsculas. En paralelo divide el texto en bloques en límites posteriores a espacios en blanco y entrega uno a cada hilo. Cada hilo procesa su bloque y devuelve tres contadores; el hilo principal los combina después de llamar a <code>join()</code>. Los hilos se inician directamente con <code>Thread.start()</code>.</p>
+  <p>El archivo se lee una vez antes de las mediciones. El texto ampliado se construye repitiéndolo 100 veces también antes de medir. Cada promedio corresponde a cinco ejecuciones; se mide con <code>System.nanoTime()</code>, incluyendo la creación, inicio y unión de hilos en las variantes paralelas. La lectura, la ampliación y la impresión quedan fuera de los intervalos. Los conteos paralelos se verifican frente al conteo secuencial.</p>
+
+  <h2>Equipo</h2>
+  <p>La consulta del sistema permitió identificar 12 procesadores lógicos, procesador de 6 núcleos y 8 GB de memoria RAM. JDK detectado: Eclipse Temurin 21.0.9.</p>
+
+  <h2>Resultados</h2>
+  <p>Conteos para el documento original: 386.677 palabras, 2.245 apariciones de «Quijote» y 950 palabras que contienen «ción». Para Ampliado: 38.667.700 palabras, 224.500 apariciones y 95.000 palabras coincidentes.</p>
+  <table>
+    <thead><tr><th>Texto</th><th>Hilos</th><th>Promedio (ms)</th><th>Speedup</th></tr></thead>
+    <tbody>
+      <tr><td>Original</td><td>1 (secuencial)</td><td>22,767</td><td>1,000</td></tr>
+      <tr><td>Original</td><td>2</td><td>10,389</td><td>2,191</td></tr>
+      <tr><td>Original</td><td>4</td><td>6,223</td><td>3,659</td></tr>
+      <tr><td>Ampliado</td><td>1 (secuencial)</td><td>1.844,990</td><td>1,000</td></tr>
+      <tr><td>Ampliado</td><td>2</td><td>945,730</td><td>1,951</td></tr>
+      <tr><td>Ampliado</td><td>4</td><td>502,879</td><td>3,669</td></tr>
+    </tbody>
+  </table>
+  <p class="note">Los speedups se calcularon como tiempo secuencial promedio dividido entre tiempo paralelo promedio. Los tiempos paralelos incluyen el costo de crear los hilos.</p>
+
+  <h2>Análisis</h2>
+  <ol>
+    <li>En ambas entradas, las versiones con 2 y 4 hilos tardaron menos que la secuencial. En el texto original, los promedios fueron aproximadamente 10,4 ms y 6,2 ms, frente a 22,8 ms.</li>
+    <li>Al aumentar de 2 a 4 hilos, el tiempo bajó en estas mediciones. La mejora no es perfectamente proporcional al número de hilos porque también intervienen la creación y coordinación de hilos y los recursos del equipo.</li>
+    <li>El documento ampliado tomó mucho más tiempo de procesamiento absoluto. En esta ejecución, el paralelismo de 4 hilos mantuvo un speedup similar al del original (3,669 frente a 3,659).</li>
+    <li>El procesamiento paralelo no siempre es más rápido. En textos pequeños, el costo de crear y coordinar hilos puede superar el trabajo que estos dividen; el resultado depende del tamaño de entrada y del equipo. En esta prueba, incluso el original fue suficientemente grande para que los hilos redujeran el promedio.</li>
+  </ol>
+
+  <h2>Conclusiones</h2>
+  <p>La implementación con cuatro hilos fue la más rápida en las dos entradas medidas y sus conteos coincidieron con los secuenciales. La ampliación incrementó el trabajo y el tiempo, mientras que el speedup observado se mantuvo cercano a 3,7. Estos resultados corresponden a una ejecución concreta; el rendimiento puede variar con la carga del equipo, la JVM y el tamaño del texto.</p>
+</body>
+</html>
