@@ -18,7 +18,7 @@
   <h1>Procesamiento secuencial y paralelo de texto</h1>
   <p><strong>Fecha de ejecución:</strong> 8 de octubre de 2026<br>
      <strong>Archivo:</strong> DonQuijote.txt (2.168.114 caracteres)<br>
-     <strong>Entorno:</strong> Java 21 (Eclipse Adoptium), Windows, 12 procesadores lógicos detectados, procesador de 6 núcleos y 8 GB de memoria RAM.</p>
+     <strong>Entorno:</strong> Java 21 (Eclipse Adoptium), Windows, 12 procesadores lógicos detectados, procesador de 6 núcleos AMD Ryzen 5 4600H y 8 GB de memoria RAM.</p>
      <p><strong>Repositorio GitHub:</strong> <a href="https://github.com/rafael2000-prog/prac1-Paralelo">https://github.com/rafael2000-prog/prac1-Paralelo</a></p>
 
   <h2>Solución</h2>
@@ -26,7 +26,7 @@
   <p>El archivo se lee una vez antes de las mediciones. El texto ampliado se construye repitiéndolo 100 veces también antes de medir. Cada promedio corresponde a cinco ejecuciones; se mide con <code>System.nanoTime()</code>, incluyendo la creación, inicio y unión de hilos en las variantes paralelas. La lectura, la ampliación y la impresión quedan fuera de los intervalos. Los conteos paralelos se verifican frente al conteo secuencial.</p>
 
   <h2>Equipo</h2>
-  <p>La consulta del sistema permitió identificar 12 procesadores lógicos, procesador de 6 núcleos y 8 GB de memoria RAM. JDK detectado: Eclipse Temurin 21.0.9.</p>
+  <p>La consulta del sistema permitió identificar 12 procesadores lógicos, procesador de 6 núcleos AMD Ryzen 5 4600H y 8 GB de memoria RAM. JDK detectado: Eclipse Temurin 21.0.9.</p>
 
   <h2>Resultados</h2>
   <p>Conteos para el documento original: 386.677 palabras, 2.245 apariciones de «Quijote» y 950 palabras que contienen «ción». Para Ampliado: 38.667.700 palabras, 224.500 apariciones y 95.000 palabras coincidentes.</p>
