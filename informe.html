@@ -19,6 +19,7 @@
   <p><strong>Fecha de ejecución:</strong> 8 de octubre de 2026<br>
      <strong>Archivo:</strong> DonQuijote.txt (2.168.114 caracteres)<br>
      <strong>Entorno:</strong> Java 21 (Eclipse Adoptium), Windows, 12 procesadores lógicos detectados, procesador de 6 núcleos y 8 GB de memoria RAM.</p>
+     <p><strong>Repositorio GitHub:</strong> <a href="https://github.com/rafael2000-prog/prac1-Paralelo">https://github.com/rafael2000-prog/prac1-Paralelo</a></p>
 
   <h2>Solución</h2>
   <p>El programa cuenta palabras formadas por letras Unicode y marcas diacríticas, apariciones exactas de «Quijote» y palabras que contienen «ción», ignorando mayúsculas y minúsculas. En paralelo divide el texto en bloques en límites posteriores a espacios en blanco y entrega uno a cada hilo. Cada hilo procesa su bloque y devuelve tres contadores; el hilo principal los combina después de llamar a <code>join()</code>. Los hilos se inician directamente con <code>Thread.start()</code>.</p>
